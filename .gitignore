@@ -21,7 +21,10 @@
 *.app
 
 # Misc
+External
 Temp
 *.suo
 *.sdf
 *.user
+*.ilk
+*.pdb

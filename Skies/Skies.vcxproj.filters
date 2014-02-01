@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Network">
+      <UniqueIdentifier>{58b49bd9-1cde-4768-9648-ae599e84ec55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{e301492e-aec4-4352-b883-dc6bdb6f8131}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Test">
+      <UniqueIdentifier>{a0fad274-4a0b-49a9-829c-387322d9ba33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\Test">
+      <UniqueIdentifier>{adf5987f-7646-48b0-8918-f56e48f445fe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Network\Address.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\Connection.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\ISocket.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Network\SocketWin32.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Network\Connection.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\SocketWin32.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Network\Test\ClientServerTest.cpp">
+      <Filter>Network\Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
