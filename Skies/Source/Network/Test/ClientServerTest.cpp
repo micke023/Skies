@@ -18,47 +18,83 @@ int main(int argc, char * argv[])
 {
 	Connection connection;
 	connection.Init(ProtocolId, TimeOut);
-	
-	if (!connection.Start(ClientPort))
+
+	char input;
+	cout<<"Server(s) or Client(c)? ";
+	cin>>input;
+
+	if(input == 's')
 	{
-		printf("Could not start connection on port %d\n", ClientPort);
-		return 1;
+		if (!connection.Start(ServerPort))
+		{
+			printf("Could not start connection on port %d\n", ServerPort);
+			return 1;
+		}
+	
+		connection.Listen();
+	
+		while (!GetAsyncKeyState(VK_ESCAPE))
+		{
+			if (connection.IsConnected())
+			{
+				unsigned char package[] = "Server to client";
+				connection.SendPackage(package, sizeof(package));
+			}
+		
+			while (!GetAsyncKeyState(VK_ESCAPE))
+			{
+				unsigned char package[256];
+				int bytes_read = connection.ReceivePacket(package, sizeof(package));
+				if (bytes_read == 0)
+					break;
+				printf("Received packet from client\n");
+			}
+		
+			connection.Update(DeltaTime);
+			connection.Wait(DeltaTime);
+		}
 	}
-	
-	connection.Connect(Address(127,0,0,1,ServerPort));
-	bool connected = false;
-	
-	while (true)
+	else
 	{
-		if (!connected && connection.IsConnected())
+		if (!connection.Start(ClientPort))
 		{
-			printf("Client connected to server\n");
-			connected = true;
+			printf("Could not start connection on port %d\n", ClientPort);
+			return 1;
 		}
-		
-		if (!connected && connection.ConnectFailed())
+	
+		connection.Connect(Address(127,0,0,1,ServerPort));
+		bool connected = false;
+	
+		while (!GetAsyncKeyState(VK_ESCAPE))
 		{
-			printf("Connection failed\n");
-			break;
-		}
+			if (!connected && connection.IsConnected())
+			{
+				printf("Client connected to server\n");
+				connected = true;
+			}
 		
-		unsigned char package[] = "Client to server";
-		connection.SendPackage(package, sizeof(package));
-		
-		while (true)
-		{
-			unsigned char packet[256];
-			int bytes_read = connection.ReceivePacket(packet, sizeof(packet));
-			if (bytes_read == 0)
+			if (!connected && connection.ConnectFailed())
+			{
+				printf("Connection failed\n");
 				break;
-			printf("Received packet from server\n");
-		}
+			}
 		
-		connection.Update(DeltaTime);
-		connection.Wait(DeltaTime);
+			unsigned char package[] = "Client to server";
+			connection.SendPackage(package, sizeof(package));
+		
+			while (!GetAsyncKeyState(VK_ESCAPE))
+			{
+				unsigned char packet[256];
+				int bytes_read = connection.ReceivePacket(packet, sizeof(packet));
+				if (bytes_read == 0)
+					break;
+				printf("Received packet from server\n");
+			}
+		
+			connection.Update(DeltaTime);
+			connection.Wait(DeltaTime);
+		}
 	}
-	
 	connection.Release();
 	return 0;
 }
-
