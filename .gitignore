@@ -19,3 +19,9 @@
 *.exe
 *.out
 *.app
+
+# Misc
+Temp
+*.suo
+*.sdf
+*.user
